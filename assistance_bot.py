@@ -4,6 +4,7 @@ from telebot import apihelper
 from telebot import types
 from pyowm import OWM
 
+
 knownUsers = []  # todo: save these in a file,
 userStep = {}  # so they won't reset every time the bot restarts
 
@@ -21,8 +22,11 @@ def get_user_step(uid):
 		userStep[uid] = 0
 		return 0
 
+TOKEN = os.environ['Telegram_TOKEN']
+API_key_OWM = os.environ['OWM_TOKEN']
+
+#apihelper.proxy = {'https': PROXY}
 owm = OWM(API_key_OWM)
-apihelper.proxy = {'https': PROXY}
 bot = telebot.TeleBot(TOKEN)
 
 # команда START
