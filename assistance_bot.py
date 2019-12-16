@@ -11,8 +11,6 @@ commands = {  # Расшифровка команды HELP
 	'geo'	: 'Покажу прогноз погоды, если ты разрешишь мне передать свои координаты'
 }
 
-# 142371402 - мой чатик
-
 now = 	datetime.datetime.now()
 
 def get_user_step(uid):
@@ -27,7 +25,7 @@ API_key_OWM = '0fdbf8fa3686cb494aa67a2f04c9ab9e'
 owm = OWM(API_key_OWM)
 
 TOKEN = '980391350:AAHlF91WcX12-1dHfzaXoObQh7DrboGqjzs'
-PROXY = 'https://91.236.239.149:3128'
+#PROXY = 'https://91.236.239.149:3128'
 apihelper.proxy = {'https': PROXY}
 bot = telebot.TeleBot(TOKEN)
 
