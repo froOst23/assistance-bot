@@ -1,1 +1,1 @@
-assistance_bot: python3 assistance_bot.py
+assistancefrost: python3 assistance_bot.py
