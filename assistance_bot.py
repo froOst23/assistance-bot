@@ -6,8 +6,8 @@ from telebot import types
 from pyowm import OWM
 
 
-knownUsers = []  # todo: save these in a file,
-userStep = {}  # so they won't reset every time the bot restarts
+knownUsers = []  # содержит известных пользователей
+userStep = {}
 
 commands = {  # Расшифровка команды HELP
 	'geo'	: 'Покажу прогноз погоды, если ты разрешишь мне передать свои координаты'
@@ -27,10 +27,11 @@ TOKEN = os.environ['Telegram_TOKEN']
 API_key_OWM = os.environ['OWM_TOKEN']
 
 #apihelper.proxy = {'https': PROXY}
+
 owm = OWM(API_key_OWM)
 bot = telebot.TeleBot(TOKEN)
 
-# команда START
+# команда start
 @bot.message_handler(commands=['start'])
 def command_start(m):
 
@@ -42,26 +43,27 @@ def command_start(m):
 	welcome_first = 'Привет @' + str(username_id) + '! \n' + 'Ты только что меня включил и я готов к работе!' + '\n' + 'На данный момент я умею определять температуру воздуха по двум координатам'
 	welcome_second = 'Я уже включен и работаю! Попробуй написать /help чтобы узнать команды'
 
-	if cid not in knownUsers:  # if user hasn't used the "/start" command yet:
-		knownUsers.append(cid)  # save user id, so you could brodcast messages to all users of this bot later
-		userStep[cid] = 0  # save user id and his current "command level", so he can use the "/getImage" command
+	if cid not in knownUsers:  # если пользователь первы раз нажимает /start
+		knownUsers.append(cid)
+		userStep[cid] = 0
 		bot.send_message(cid, welcome_first)
 		bot.send_message(142371402, feedback)
-		command_help(m)  # show the new user the help page
+		command_help(m)  # последующие нажатия /start
 	else:
 		bot.send_message(cid, welcome_second)
 		bot.send_message(142371402, feedback)
 
-# команда HELP
+# команда help
 @bot.message_handler(commands=['help'])
 def command_help(m):
 	cid = m.chat.id
 	help_text = "Вот что я умею: \n"
-	for key in commands:  # generate help text out of the commands dictionary defined at the top
+	for key in commands:  # генерирование текста help_text
 		help_text += "/" + key + ": "
 		help_text += commands[key] + "\n"
-	bot.send_message(cid, help_text)  # send the generated help page
+	bot.send_message(cid, help_text)
 
+# команда geo
 @bot.message_handler(commands=["geo"])
 def geo(message):
 	keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
@@ -69,16 +71,18 @@ def geo(message):
 	keyboard.add(button_geo)
 	bot.send_message(message.chat.id, "Если ты поделишься своими координатами, то я смогу показать тебе текущую погоду", reply_markup=keyboard)
 
+# получение координат пользователя и их обработка
 @bot.message_handler(content_types=["location"])
 def location(message):
 	if message.location is not None:
-		#print(message.location)
-		#print("latitude: %s; longitude: %s" % (message.location.latitude, message.location.longitude))
+		# получаем координаты пользователя
 		obs = owm.weather_at_coords(message.location.latitude, message.location.longitude)
 		w = obs.get_weather()
 		l = obs.get_location()
 		location = str(l.get_name())
 		temp = str(w.get_temperature(unit='celsius'))
+
+		# преобразуем корректный вывод температуры
 		correct_temp = temp[8:15]
 		weather_message = 'Вот что я получил: ' + '\n' + 'Широта: ' + str(message.location.latitude) + '\n' + "Долгота " + str(message.location.longitude) + '\n' + 'Давай я посмотрю что у нас по погоде на openweathermap.org'+ '\n' + "Ты сейчас находишься в месте под названием - " + str(location) + '\n' + "И сейчас " + str(correct_temp) + " Градусов по Цельсию "
 		bot.send_message(message.chat.id, weather_message)
