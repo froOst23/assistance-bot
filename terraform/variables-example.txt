@@ -1,0 +1,17 @@
+# variables.tf
+
+variable "heroku_account_email" {
+  default = "heroku_account_email"
+}
+
+variable "heroku_api_key" {
+  default = "heroku_api_key"
+}
+
+variable "sensitive_config_vars" {
+  default = {
+    "SECRET" = "KEY"
+    "SECRET" = "KEY"
+    "SECRET" = "KEY"
+  }
+}
