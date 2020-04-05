@@ -3,6 +3,7 @@ import telebot
 import apiai
 import json
 from telebot import apihelper
+from telegram.ext import Updater
 from telebot import types
 from pyowm import OWM
 
@@ -34,7 +35,6 @@ bot = telebot.TeleBot(TelegramTOKEN)
 owm = OWM(API_key_OWM)
 # Токен API Dialogflow к Telegram
 updater = Updater(token = DialogTOKEN)
-dispatcher = updater.dispatcher
 
 # команда start
 @bot.message_handler(commands=['start'])
