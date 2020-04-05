@@ -25,7 +25,7 @@ resource "heroku_build" "staging" {
   buildpacks = ["https://github.com/heroku/heroku-buildpack-python"]
   source = {
     url = "https://github.com/froOst23/assistance_bot/archive/v1.0.tar.gz"
-    version = "v1.0"
+    version = "v1.1"
   }
 }
 
@@ -34,6 +34,6 @@ resource "heroku_build" "production" {
   buildpacks = ["https://github.com/heroku/heroku-buildpack-python"]
   source = {
     url = "https://github.com/froOst23/assistance_bot/archive/v1.0.tar.gz"
-    version = "v1.0"
+    version = "v1.1"
   }
 }
