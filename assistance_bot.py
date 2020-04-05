@@ -72,7 +72,7 @@ def send_text(message):
 	request.session_id = 'BatlabAIBot'
 	# request.query = update.message.text
 	request.query = message.text
-	responseJson = json.load(request.getresponse().read().decode('utf-8'))
+	responseJson = json.loads(request.getresponse().read().decode('utf-8'))
 	response = responseJson['result']['fulfillment']['speech']
 	if response:
 		bot.send_message(message.chat.id, text=response)
