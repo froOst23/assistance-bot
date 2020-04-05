@@ -3,7 +3,6 @@ import telebot
 import apiai
 import json
 from telebot import apihelper
-from telegram.ext import Updater
 from telebot import types
 from pyowm import OWM
 
