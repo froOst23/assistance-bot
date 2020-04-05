@@ -70,7 +70,8 @@ def send_text(message):
 	request = apiai.ApiAI(DialogTOKEN).text_request()
 	request.lang = 'ru'
 	request.session_id = 'BatlabAIBot'
-	request.query = update.message.text
+	# request.query = update.message.text
+	request.query = message.text
 	responseJson = json.load(request.getresponse().read().decode('utf-8'))
 	response = responseJson['result']['fulfillment']['speech']
 	if response:
