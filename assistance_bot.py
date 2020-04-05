@@ -66,7 +66,7 @@ def command_help(m):
 	bot.send_message(cid, help_text)
 
 @bot.message_handler(content_types=['text'])
-def send_text(bot, update):
+def send_text(message):
 	request = apiai.ApiAI(DialogTOKEN).text_request()
 	request.lang = 'ru'
 	request.session_id = 'BatlabAIBot'
@@ -74,9 +74,9 @@ def send_text(bot, update):
 	responseJson = json.load(request.getresponse().read().decode('utf-8'))
 	response = responseJson['result']['fulfillment']['speech']
 	if response:
-		bot.send_message(chat_id=update.message.chat_id, text=response)
+		bot.send_message(message.chat.id, text=response)
 	else:
-		bot.send_message(chat_id=update.message.chat_id, text='Я вас не совсем понял...')
+		bot.send_message(message.chat.id, text='Я вас не совсем понял...')
 
 
 # команда geo
