@@ -33,8 +33,6 @@ DialogTOKEN = os.environ['Dialogflow_TOKEN']
 bot = telebot.TeleBot(TelegramTOKEN)
 # Токен API OWM к Telegram
 owm = OWM(API_key_OWM)
-# Токен API Dialogflow к Telegram
-updater = Updater(token = DialogTOKEN)
 
 # команда start
 @bot.message_handler(commands=['start'])
