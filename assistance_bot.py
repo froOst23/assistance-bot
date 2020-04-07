@@ -65,20 +65,6 @@ def command_help(m):
 		help_text += commands[key] + "\n"
 	bot.send_message(cid, help_text)
 
-@bot.message_handler(content_types=['text'])
-def send_text(message):
-	request = apiai.ApiAI(DialogTOKEN).text_request()
-	request.lang = 'ru'
-	request.session_id = 'BatlabAIBot'
-	# request.query = update.message.text
-	request.query = message.text
-	responseJson = json.loads(request.getresponse().read().decode('utf-8'))
-	response = responseJson['result']['fulfillment']['speech']
-	if response:
-		bot.send_message(message.chat.id, text=response)
-	else:
-		bot.send_message(message.chat.id, text='Я вас не совсем понял...')
-
 
 # команда geo
 @bot.message_handler(commands=["geo"])
@@ -108,6 +94,21 @@ def location(message):
 		# собираем feedback
 		w_feedback = '@' + str(message.chat.username) + '\n' + 'поделился своими координатами ' + '\n' + 'Широта ' + str(message.location.latitude)+ '\n' + 'Долгота ' + str(message.location.longitude) + '\n' + 'Он сейчас находишься в месте под названием - ' + str(location) + '\n' + 'И сейчас там' + str(correct_temp) + ' Градусов по Цельсию'
 		bot.send_message(142371402, w_feedback)
+
+
+@bot.message_handler(content_types=['text'])
+def send_text(message):
+	request = apiai.ApiAI(DialogTOKEN).text_request()
+	request.lang = 'ru'
+	request.session_id = 'BatlabAIBot'
+	# request.query = update.message.text
+	request.query = message.text
+	responseJson = json.loads(request.getresponse().read().decode('utf-8'))
+	response = responseJson['result']['fulfillment']['speech']
+	if response:
+		bot.send_message(message.chat.id, text=response)
+	else:
+		bot.send_message(message.chat.id, text='Я вас не совсем понял...')
 
 
 bot.polling(none_stop=True)
