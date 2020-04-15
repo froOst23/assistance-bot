@@ -33,40 +33,43 @@ bot = telebot.TeleBot(TelegramTOKEN)
 # Токен API OWM к Telegram
 owm = OWM(API_key_OWM)
 
-# команда start
+# Команда start
 @bot.message_handler(commands=['start'])
-def command_start(m):
-	cid = m.chat.id
-	first_name_id = m.chat.first_name
-	username_id = m.chat.username
-
+def command_start(message):
+	cid = message.chat.id
+	first_name_id = message.chat.first_name
+	username_id = message.chat.username
 	feedback = 'К нам присоеденился @' + str(username_id) + '\n' + 'по имени ' + str(first_name_id) + '\n' + 'его id ' + str(cid)
-	welcome_first = 'Привет @' + str(username_id) + '! \n' + 'Ты только что меня включил и я готов к работе!' + '\n' + 'На данный момент я умею определять температуру воздуха по двум координатам'
+	welcome_first = 'Привет @' + str(username_id) + '! \n' + 'Ты только что меня включил и я готов к работе!'
 	welcome_second = 'Я уже включен и работаю! Попробуй написать /help чтобы узнать команды'
 
-	if cid not in knownUsers:  # если пользователь первы раз нажимает /start
+	# Если пользователь первы раз нажимает /start
+	if cid not in knownUsers:
 		knownUsers.append(cid)
 		userStep[cid] = 0
 		bot.send_message(cid, welcome_first)
 		bot.send_message(142371402, feedback)
-		command_help(m)  # последующие нажатия /start
+		command_help(message)
+	# Последующие нажатия /start
 	else:
 		bot.send_message(cid, welcome_second)
 		bot.send_message(142371402, feedback)
 
 
-# команда help
+# Команда help
 @bot.message_handler(commands=['help'])
-def command_help(m):
-	cid = m.chat.id
+def command_help(message):
+	cid = message.chat.id
 	help_text = "Вот что я умею: \n"
-	for key in commands:  # генерирование текста help_text
+
+	# Вывод текста help_text
+	for key in commands:
 		help_text += "/" + key + ": "
 		help_text += commands[key] + "\n"
 	bot.send_message(cid, help_text)
 
 
-# команда geo
+# Команда geo
 @bot.message_handler(commands=["geo"])
 def geo(message):
 	keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
@@ -75,7 +78,7 @@ def geo(message):
 	bot.send_message(message.chat.id, "Если ты поделишься своими координатами, то я смогу показать тебе текущую погоду", reply_markup=keyboard)
 
 
-# получение координат пользователя и их обработка
+# Получение координат пользователя и их обработка
 @bot.message_handler(content_types=["location"])
 def location(message):
 	if message.location is not None:
@@ -96,12 +99,12 @@ def location(message):
 		bot.send_message(142371402, w_feedback)
 
 
+# Используем возможности dialogflow
 @bot.message_handler(content_types=['text'])
 def send_text(message):
 	request = apiai.ApiAI(DialogTOKEN).text_request()
 	request.lang = 'ru'
 	request.session_id = 'BatlabAIBot'
-	# request.query = update.message.text
 	request.query = message.text
 	responseJson = json.loads(request.getresponse().read().decode('utf-8'))
 	response = responseJson['result']['fulfillment']['speech']
