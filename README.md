@@ -1,5 +1,9 @@
 # assistance_bot
 
+![](https://img.shields.io/github/languages/top/froOst23/assistance_bot)
+![](https://img.shields.io/github/last-commit/froOst23/assistance_bot)
+![](https://img.shields.io/github/repo-size/froOst23/assistance_bot)
+
 ### Description
 It's just a bot for telegram which, uses the coordinates provided by user, shows the outside temperature.
 ### Deploy
