@@ -1,5 +1,5 @@
-pyTelegramBotAPI
-pyowm
-boto
-apiai
-numpy
+pyTelegramBotAPI==3.6.7
+pyowm==2.10.0
+boto==2.49.0
+apiai==1.2.3
+numpy==1.18.3
