@@ -15,6 +15,7 @@ commands = {
 	'geo'	: 'Покажу прогноз погоды, если ты разрешишь мне передать свои координаты'
 }
 
+
 def get_user_step(uid):
 	if uid in userStep:
 		return userStep[uid]
@@ -32,6 +33,7 @@ DialogTOKEN = os.environ['Dialogflow_TOKEN']
 bot = telebot.TeleBot(TelegramTOKEN)
 # Токен API OWM к Telegram
 owm = OWM(API_key_OWM)
+
 
 # Команда start
 @bot.message_handler(commands=['start'])
@@ -61,7 +63,6 @@ def command_start(message):
 def command_help(message):
 	cid = message.chat.id
 	help_text = "Вот что я умею: \n"
-
 	# Вывод текста help_text
 	for key in commands:
 		help_text += "/" + key + ": "
@@ -88,12 +89,10 @@ def location(message):
 		l = obs.get_location()
 		location = str(l.get_name())
 		temp = str(w.get_temperature(unit='celsius'))
-
 		# преобразуем корректный вывод температуры
 		correct_temp = temp[8:15]
-		weather_message = 'Вот что я получил: ' + '\n' + 'Широта: ' + str(message.location.latitude) + '\n' + "Долгота " + str(message.location.longitude) + '\n' + 'Давай я посмотрю что у нас по погоде на openweathermap.org'+ '\n' + "Ты сейчас находишься в месте под названием - " + str(location) + '\n' + "И сейчас " + str(correct_temp) + " Градусов по Цельсию "
+		weather_message = 'Вот что я получил: ' + '\n' + 'Широта: ' + str(message.location.latitude) + '\n' + "Долгота " + str(message.location.longitude) + '\n' + 'Давай я посмотрю что у нас по погоде на openweathermap.org' + '\n' + "Ты сейчас находишься в месте под названием - " + str(location) + '\n' + "И сейчас " + str(correct_temp) + " Градусов по Цельсию "
 		bot.send_message(message.chat.id, weather_message)
-
 		# собираем feedback
 		w_feedback = '@' + str(message.chat.username) + '\n' + 'поделился своими координатами ' + '\n' + 'Широта ' + str(message.location.latitude)+ '\n' + 'Долгота ' + str(message.location.longitude) + '\n' + 'Он сейчас находишься в месте под названием - ' + str(location) + '\n' + 'И сейчас там' + str(correct_temp) + ' Градусов по Цельсию'
 		bot.send_message(142371402, w_feedback)
