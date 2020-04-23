@@ -7,3 +7,4 @@ terraform/terraform.tfstate.backup
 terraform/variables.tf
 terraform/pipeline.tf.backup
 terraform/main.tf.backup
+venv/
